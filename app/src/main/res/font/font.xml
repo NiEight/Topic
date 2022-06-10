@@ -4,4 +4,7 @@
             android:fontWeight="400"
             android:font="@font/ibmplexmono"/>
 
+        <font android:fontStyle="normal"
+            android:fontWeight="400"
+            android:font="@font/ef_diary"/>
 </font-family>
