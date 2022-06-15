@@ -4,11 +4,123 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/VeryPeri_Dark">
-<ImageView
-    android:layout_width="190dp"
-    android:layout_height="190dp"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
-    android:src="@drawable/logo"/>
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="190dp"
+        android:layout_height="190dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:src="@drawable/logo" />
+    
+    <ImageView
+        android:id="@+id/login_kakao"
+        android:layout_width="160dp"
+        android:layout_height="40dp"
+        app:layout_constraintTop_toBottomOf="@id/logo"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="30dp"
+        android:src="@drawable/login_with_kakao"
+        android:clickable="true"/>
+
+    <ImageView
+        android:id="@+id/login_google"
+        android:layout_width="160dp"
+        android:layout_height="40dp"
+        app:layout_constraintTop_toBottomOf="@id/logo"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="30dp"
+        android:src="@drawable/login_with_google"
+        android:clickable="true"/>
+
+    <EditText
+        android:id="@+id/idText"
+        android:layout_width="260dp"
+        android:layout_height="50dp"
+        app:layout_constraintTop_toBottomOf="@id/login_kakao"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="70dp"
+        android:hint="E-mail"
+        android:padding="10dp"
+        android:textColor="#6d6e88"
+        android:textColorHint="#6d6e88"
+        android:background="@drawable/input_box"/>
+
+    <EditText
+        android:id="@+id/pwText"
+        android:layout_width="260dp"
+        android:layout_height="50dp"
+        app:layout_constraintTop_toBottomOf="@id/idText"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="30dp"
+        android:hint="Password"
+        android:padding="10dp"
+        android:textColor="#6d6e88"
+        android:textColorHint="#6d6e88"
+        android:background="@drawable/input_box"/>
+
+    <ImageView
+        android:id="@+id/checkBox"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/check_box"
+        app:layout_constraintTop_toBottomOf="@+id/pwText"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="75dp"
+        android:layout_marginTop="5dp"
+        android:clickable="true"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:text="Remeber Me"
+        android:textColor="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@+id/pwText"
+        app:layout_constraintLeft_toRightOf="@id/checkBox"
+        android:gravity="center"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="3dp"/>
+
+    <ImageView
+        android:id="@+id/loginBtn"
+        android:layout_width="135dp"
+        android:layout_height="45dp"
+        app:layout_constraintTop_toBottomOf="@+id/checkBox"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:src="@drawable/login"
+        android:layout_marginTop="30dp"
+        android:clickable="true"/>
+
+    <TextView
+        android:id="@+id/findPW"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Forget your password?"
+        app:layout_constraintTop_toBottomOf="@+id/loginBtn"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp"
+        android:layout_marginTop="10dp"
+        android:clickable="true"/>
+
+    <TextView
+        android:id="@+id/newMember"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Not a Member?"
+        app:layout_constraintTop_toBottomOf="@+id/findPW"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp"
+        android:layout_marginTop="10dp"
+        android:clickable="true"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
