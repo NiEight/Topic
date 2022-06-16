@@ -19,33 +19,27 @@
         android:clickable="true"/>
 
     <TextView
-        android:id="@+id/hidingContentsTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/back"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="5dp"
-        android:text="숨긴 콘텐츠"
-        android:fontFamily="@font/tt_together"
-        android:textSize="30dp"
-        android:textColor="@color/VeryPeri_Light"
-        android:gravity="center"/>
-
-    <TextView
-        android:id="@+id/no_hiding"
+        android:id="@+id/toPick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:text="숨김 처리된 콘텐츠 없음"
+        android:text="ToPick"
         android:textSize="25dp"
         android:textColor="@color/white"
-        android:fontFamily="@font/ef_diary"
+        android:fontFamily="@font/ibmplexmono"
         app:layout_constraintBottom_toBottomOf="parent"
         />
 
-    <!-- 만약 숨긴 콘텐츠가 존재할 경우에는 no_hiding의 visivle 값을 gone으로 설정하고
-         숨긴 콘텐츠르를 표시한다. (숨긴 콘텐츠를 표시할 View로는 고민중)-->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/toPick"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:text="버전 1.0.0\n최신 버전입니다."
+        android:textColor="@color/VeryPeri_Light"
+        android:fontFamily="@font/ef_diary"
+        android:gravity="center"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
