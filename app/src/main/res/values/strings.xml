@@ -1,4 +1,14 @@
 <resources>
     <string name="app_name">Topic</string>
-    <string name="change_pw_sign">* 비밀번호는 8 ~ 30 자의 영문 대소문자, 숫자, 특수문자를 조합하여 설정해 주세요.\n\n* 다른사이트에서 사용하는 것과 동일하거나 쉬운 비밀번호는 사용하지 마세요.\n\n* 안전한 계정 사용을 위해 비밀번호는 주기적으로 변경해 주세요.</string>
+    <string name="title_activity_bookmark">Bookmark</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

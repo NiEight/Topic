@@ -1,53 +1,48 @@
 package com.example.topic;
 
+import static androidx.core.content.PackageManagerCompat.LOG_TAG;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-
-import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class Bookmark extends AppCompatActivity {
+
+
+    Button option, search;
 
     private Toolbar toolbar;
     private ViewPager viewPager;
     private TabLayout tabLayout;
-
-    private YoutubeFragment youtubeFragment;
-    private ArticleFragment articleFragment;
-
-    Button option,search,bookmark;
-
+    private Bookmark_YoutubeFragment bookmark_youtubeFragment;
+    private Bookmark_ArticleFragment bookmark_articleFragment;
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.bookmark);
 
-        //버튼구현
-        option = findViewById(R.id.option_button);
-        search = findViewById(R.id.search_button);
-        bookmark = findViewById(R.id.bookmark_button);
+        //옵션 버튼과 검색 버튼
+        option = findViewById(R.id.bookmark_option_button);
+        search = findViewById(R.id.bookmark_search_button);
 
-        //옵션 버튼
         option.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -57,44 +52,35 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        //북마크 버튼
-        bookmark.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                Intent intent = new Intent(getApplicationContext(), Bookmark.class);
-                startActivity(intent);
-
-
-            }
-        });
-        //검색 버튼
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), Search.class);
                 startActivity(intent);
+
             }
         });
 
 
-
-
+        //북마크 탭 화면
         //탭 구현
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        viewPager = findViewById(R.id.view_pager);
-        tabLayout = findViewById(R.id.tab_layout);
+        viewPager = findViewById(R.id.bookmark_view_pager);
+        tabLayout = findViewById(R.id.bookmark_tab_layout);
 
-        youtubeFragment = new YoutubeFragment();
-        articleFragment = new ArticleFragment();
+        bookmark_youtubeFragment = new Bookmark_YoutubeFragment();
+        bookmark_articleFragment = new Bookmark_ArticleFragment();
 
         tabLayout.setupWithViewPager(viewPager);
 
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), 0);
-        viewPagerAdapter.addFragment(youtubeFragment, "Yotube");
-        viewPagerAdapter.addFragment(articleFragment, "Article");
+        viewPagerAdapter.addFragment(bookmark_youtubeFragment, "Yotube");
+        viewPagerAdapter.addFragment(bookmark_articleFragment, "Article");
         viewPager.setAdapter(viewPagerAdapter);
+
+
 
     }
 
@@ -131,5 +117,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-    }
+
+}
 }

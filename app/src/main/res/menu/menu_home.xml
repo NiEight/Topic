@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/hiddingContents"
+        android:title="콘텐츠 숨기기"
+        />
+    <item
+        android:id="@+id/addBookmark"
+        android:title="북마크 추가"
+        />
+</menu>
