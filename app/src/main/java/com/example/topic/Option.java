@@ -15,7 +15,6 @@ public class Option extends AppCompatActivity {
     TextView pwChangedBtn, logout, deleteMyAccount, apkInfo, support;
 
     private String email;
-    private String URL;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,6 +37,16 @@ public class Option extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 onBackPressed();
+            }
+        });
+
+        //비밀번호 변경
+        pwChangedBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), CheckPassword.class);
+                intent.putExtra("email", email);
+                startActivity(intent);
             }
         });
 
@@ -87,7 +96,4 @@ public class Option extends AppCompatActivity {
             }
         });
     }
-
-
-
 }
