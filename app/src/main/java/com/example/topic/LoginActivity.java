@@ -43,6 +43,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText idText, pwText;
     private String email, password;
     private String URL = "http://10.0.2.2/topick/login.php";
+    private long pressedTime = 0;
     Button loginKakao, loginButton;
 
     GoogleSignInClient mGoogleSignInClient;
@@ -116,6 +117,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
         // 구글 로그인 끝
     }
+    //뒤로가기 2번 했을 시 앱 종료
+    public void onBackPressed() {
+        if(pressedTime == 0) {
+            Toast.makeText(this, "한번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show();
+            pressedTime = System.currentTimeMillis();
+        } else {
+            int seconds = (int)(System.currentTimeMillis() - pressedTime);
+
+            if(seconds > 2000) {
+                pressedTime = 0;
+            }   else {
+                finishAffinity();
+                System.runFinalization();
+                System.exit(0);
+            }
+        }
+    }
+
 
     public void login(View view) {
         email = idText.getText().toString().trim();
@@ -128,8 +147,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 public void onResponse(String response) {
                     if (response.equals("success")) {
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        intent.putExtra("email", email);
                         startActivity(intent);
-                        finish();
                     } else if (response.equals("failure")) {
                         Toast.makeText(LoginActivity.this, "ID 또는 비밀번호가 잘못됐습니다.", Toast.LENGTH_SHORT).show();
                     }
@@ -192,9 +211,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void onClick(View v) {
-        if (v.getId() == R.id.login_google) {
-            signIn();
-
+        switch (v.getId()) {
+            case R.id.login_google:
+                signIn();
+                break;
         }
     }
 

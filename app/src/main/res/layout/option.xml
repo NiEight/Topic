@@ -7,23 +7,23 @@
     tools:context=".MainActivity"
     android:background="@color/VeryPeri_Dark">
 
-    <ImageView
-        android:id="@+id/back"
-        android:layout_width="30dp"
+    <Button
+        android:id="@+id/backBtn"
+        android:layout_width="40dp"
         android:layout_height="40dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
-        android:src="@drawable/back"
-        android:clickable="true"/>
+        android:background="@drawable/back"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <TextView
         android:id="@+id/optionTitle"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/back"
+        app:layout_constraintLeft_toRightOf="@id/backBtn"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="5dp"
         android:text="설정"
@@ -36,7 +36,7 @@
         android:id="@+id/Personal_info_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/back"
+        app:layout_constraintTop_toBottomOf="@+id/backBtn"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="35dp"
@@ -69,13 +69,13 @@
         android:gravity="center|left"/>
 
     <TextView
-        android:id="@+id/syncAccount"
+        android:id="@+id/logout"
         android:layout_width="300dp"
         android:layout_height="50dp"
         app:layout_constraintTop_toBottomOf="@+id/pwChangedBtn"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:text="계정 연동"
+        android:text="로그아웃"
         android:textSize="20dp"
         android:fontFamily="@font/ef_diary"
         android:textColor="@color/VeryPeri_Light"
@@ -85,7 +85,7 @@
         android:id="@+id/deleteMyAccount"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        app:layout_constraintTop_toBottomOf="@+id/syncAccount"
+        app:layout_constraintTop_toBottomOf="@+id/logout"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:text="토픽 탈퇴"
@@ -107,52 +107,28 @@
         android:fontFamily="@font/ef_diary"/>
 
     <ImageView
-        android:id="@+id/general_background"
-        android:layout_width="340dp"
-        android:layout_height="50dp"
-        app:layout_constraintTop_toBottomOf="@+id/general_title"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="5dp"
-        android:src="@drawable/option_box_340x50"/>
-
-    <TextView
-        android:id="@+id/hidingContents"
-        android:layout_width="300dp"
-        android:layout_height="50dp"
-        app:layout_constraintTop_toBottomOf="@+id/general_title"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="5dp"
-        android:text="숨김 콘텐츠"
-        android:textSize="20dp"
-        android:fontFamily="@font/ef_diary"
-        android:textColor="@color/VeryPeri_Light"
-        android:gravity="center|left"/>
-
-    <ImageView
         android:id="@+id/etc_background"
         android:layout_width="340dp"
         android:layout_height="100dp"
-        app:layout_constraintTop_toBottomOf="@+id/general_background"
+        android:src="@drawable/option_box_340x100"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="10dp"
-        android:src="@drawable/option_box_340x100"/>
+        app:layout_constraintTop_toBottomOf="@id/general_title"
+        android:layout_marginTop="10dp"/>
 
     <TextView
         android:id="@+id/apkInfo"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        app:layout_constraintTop_toBottomOf="@+id/general_background"
+        android:fontFamily="@font/ef_diary"
+        android:gravity="center|left"
+        android:text="앱 정보"
+        android:textColor="@color/VeryPeri_Light"
+        android:textSize="20dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="10dp"
-        android:text="앱 정보"
-        android:textSize="20dp"
-        android:fontFamily="@font/ef_diary"
-        android:textColor="@color/VeryPeri_Light"
-        android:gravity="center|left"/>
+        app:layout_constraintTop_toBottomOf="@id/general_title"
+        android:layout_marginTop="10dp"/>
 
     <TextView
         android:id="@+id/support"
@@ -165,5 +141,6 @@
         android:textSize="20dp"
         android:fontFamily="@font/ef_diary"
         android:textColor="@color/VeryPeri_Light"
-        android:gravity="center|left"/>
+        android:gravity="center|left"
+        android:clickable="true"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

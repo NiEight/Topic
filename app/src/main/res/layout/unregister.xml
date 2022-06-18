@@ -73,6 +73,7 @@
         android:fontFamily="@font/ef_diary"/>
 
     <ImageButton
+        android:id="@+id/unregisterBtn"
         android:layout_width="380dp"
         android:layout_height="50dp"
         android:src="@drawable/deactivate_unregister_btn"

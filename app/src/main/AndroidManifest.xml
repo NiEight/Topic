@@ -53,6 +53,9 @@
             android:parentActivityName=".MainActivity"/>
         <activity android:name=".Signup"/>
         <activity android:name=".UtubePlay"/>
+        <activity android:name=".Option"/>
+        <activity android:name=".TopickInfo"/>
+        <activity android:name=".Unregister"/>
 
     </application>
 

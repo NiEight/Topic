@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private YoutubeFragment youtubeFragment;
     private ArticleFragment articleFragment;
 
-    private String originUrl, vodid = "";
+    private String originUrl, vodid = "", email;
     private String intentSearch;
 
     final String API_KEY = "이곳에 여러분의 youtube api 키를 넣어주세요";
@@ -68,7 +68,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        Intent inIntent = getIntent();
+        email = inIntent.getStringExtra("email");
 
         //버튼구현
         option = findViewById(R.id.option_button);
@@ -79,16 +80,7 @@ public class MainActivity extends AppCompatActivity {
         tag_btn1 = findViewById(R.id.tag_btn1);
         tag_btn2 = findViewById(R.id.tag_btn2);
         tag_btn3 = findViewById(R.id.tag_btn3);
-        //옵션 버튼
-        option.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-             /*   Intent intent = new Intent(getApplicationContext(), Name_rule.class);
-                startActivity(intent);
-                */
 
-            }
-        });
         //북마크 버튼
         bookmark.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,6 +98,16 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), Search.class);
                 startActivity(intent);
+            }
+        });
+
+        //옵션 버튼
+        option.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent optionIntent = new Intent(getApplicationContext(), Option.class);
+                optionIntent.putExtra("email", email);
+                startActivity(optionIntent);
             }
         });
 

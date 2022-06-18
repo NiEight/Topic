@@ -56,7 +56,11 @@ public class Signup extends AppCompatActivity {
                 public void onResponse(String response) {
                     if (response.equals("success")) {
                         Toast.makeText(Signup.this, "회원가입 완료", Toast.LENGTH_SHORT).show();
-                        singup_okBtn.setClickable(false);
+
+                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+
                     } else if (response.equals("failure")) {
                         Toast.makeText(Signup.this, "올바른 정보가 아닙니다.", Toast.LENGTH_SHORT).show();
                     }
