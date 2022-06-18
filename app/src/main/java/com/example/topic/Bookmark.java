@@ -67,10 +67,8 @@ public class Bookmark extends AppCompatActivity {
         option.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-             /*   Intent intent = new Intent(getApplicationContext(), Name_rule.class);
+                Intent intent = new Intent(getApplicationContext(), Option.class);
                 startActivity(intent);
-                */
-
             }
         });
 

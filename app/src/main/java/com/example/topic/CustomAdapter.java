@@ -16,18 +16,31 @@ import android.view.MenuInflater;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 //ArrayAdapter implements AdapterView.OnItemClickListener
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder> {
 
     private ArrayList<Contents> arrayList;
     private Context context;
+
+    private String type, header, url, imageurl, text;
+    private String URL = "http://10.0.2.2/topick/youtubebookmark.php";
     int bookMark_count = 0;
 
 
@@ -120,17 +133,46 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
                 @Override
                 public boolean onLongClick(View view) {
                     int pos = getAdapterPosition() ;
-                    //;
 
-                    Toast.makeText(context, "북마크에 등록되었습니다.",Toast.LENGTH_LONG).show();
-                    Log.d("str"," "+ bookMark_count);
-                    Intent intent = new Intent(context ,Bookmark.class);
-                    intent.putExtra("vidold", arrayList.get(pos).getVidold());
-                    intent.putExtra("name", arrayList.get(pos).getName());
-                    intent.putExtra("thumb_url", arrayList.get(pos).getThumb_url());
-                    intent.putExtra("summary", arrayList.get(pos).getSummary());
-                    intent.putExtra("bookMark_count", bookMark_count++);
-                    context.startActivity(intent);
+                    type = "youtube";
+                    url = arrayList.get(pos).getVidold();
+                    header = arrayList.get(pos).getName();
+                    imageurl = arrayList.get(pos).getThumb_url();
+                    text = arrayList.get(pos).getSummary();
+
+                    if(!url.equals("") && !header.equals("") && !imageurl.equals("") && !text.equals("")) {
+                        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                if (response.equals("success")) {
+                                    Toast.makeText(context, "북마크에 등록되었습니다.", Toast.LENGTH_SHORT).show();
+                                } else if (response.equals("failure")) {
+                                    Toast.makeText(context, "등록 실패", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(context, error.toString().trim() ,Toast.LENGTH_SHORT).show();
+                            }
+                        }){
+                            @Nullable
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                Map<String, String> data = new HashMap<>();
+                                data.put("type", type);
+                                data.put("url", url);
+                                data.put("header", header);
+                                data.put("imageurl", imageurl);
+                                data.put("text", text);
+                                return data;
+                            }
+                        };
+                        RequestQueue requestQueue = Volley.newRequestQueue(context);
+                        requestQueue.add(stringRequest);
+                    } else {
+                        Toast.makeText(context, "잘못된 요청", Toast.LENGTH_SHORT).show();
+                    }
                     return true;
                 }
             });

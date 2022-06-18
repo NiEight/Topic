@@ -12,13 +12,28 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHolder> implements Filterable {
     private ArrayList<ArticleContents> mlist, filteredList;
     private Context context;
+
+    private String type, header, text, url;
+    private String URL = "http://10.0.2.2/topick/articlebookmark.php";
+
     int bookMark_count = 0;
 
     public ArticleAdapter(ArrayList<ArticleContents> list, Context context) {
@@ -142,14 +157,45 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
                 public boolean onLongClick(View view) {
                     int pos = getAdapterPosition() ;
 
-                    Toast.makeText(context, "북마크에 등록되었습니다.",Toast.LENGTH_LONG).show();
-                    Log.d("str"," "+ title);
-                    Intent intent = new Intent(context ,Bookmark.class);
-                    intent.putExtra("title", mlist.get(pos).getTitle());
-                    intent.putExtra("description", mlist.get(pos).getDescription());
-                    intent.putExtra("link", mlist.get(pos).getLink());
-                    intent.putExtra("a_bookMark_count", bookMark_count++);
-                    context.startActivity(intent);
+                    type = "article".trim();
+                    url = mlist.get(pos).getLink().trim();
+                    header = mlist.get(pos).getTitle().trim();
+                    text = mlist.get(pos).getDescription().trim();
+
+                    if(!url.equals("") && !header.equals("") && !text.equals("")) {
+                        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                Log.d("art",response);
+                                if (response.equals("success")) {
+                                    Toast.makeText(context, "북마크에 등록되었습니다.", Toast.LENGTH_SHORT).show();
+
+                                } else if (response.equals("failure")) {
+                                    Toast.makeText(context, "등록 실패", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(context, error.toString().trim() ,Toast.LENGTH_SHORT).show();
+                            }
+                        }){
+                            @Nullable
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                Map<String, String> data = new HashMap<>();
+                                data.put("type", type);
+                                data.put("url", url);
+                                data.put("header", header);
+                                data.put("text", text);
+                                return data;
+                            }
+                        };
+                        RequestQueue requestQueue = Volley.newRequestQueue(context);
+                        requestQueue.add(stringRequest);
+                    } else {
+                        Toast.makeText(context, "잘못된 요청", Toast.LENGTH_SHORT).show();
+                    }
                     return true;
                 }
             });
