@@ -22,7 +22,6 @@ public class UtubePlay extends YouTubeBaseActivity implements
         setContentView(R.layout.utubeplay);
         ytpv = (YouTubePlayerView) findViewById(R.id.playerView);
         ytpv.initialize(serverKey, this);
-
     }
 
 
