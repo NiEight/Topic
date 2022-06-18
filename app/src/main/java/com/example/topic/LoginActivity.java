@@ -11,11 +11,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -28,10 +35,14 @@ import com.kakao.sdk.user.model.Account;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
 
-    EditText idText, pwText;
+    private EditText idText, pwText;
+    private String email, password;
+    private String URL = "http://10.0.2.2/topick/login.php";
     Button loginKakao, loginButton;
 
     GoogleSignInClient mGoogleSignInClient;
@@ -44,6 +55,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
+        email = password = "";
 
         idText = findViewById(R.id.idText);
         pwText = findViewById(R.id.pwText);
@@ -103,18 +115,53 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         }
         // 구글 로그인 끝
-
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
-
     }
+
+    public void login(View view) {
+        email = idText.getText().toString().trim();
+        password = pwText.getText().toString().trim();
+
+        //이메일과 비밀번호가 비어있지 않는 경우
+        if(!email.equals("") && !password.equals("")) {
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    if (response.equals("success")) {
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else if (response.equals("failure")) {
+                        Toast.makeText(LoginActivity.this, "ID 또는 비밀번호가 잘못됐습니다.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(LoginActivity.this, error.toString().trim() ,Toast.LENGTH_SHORT).show();
+                }
+            }){
+                @Nullable
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> data = new HashMap<>();
+                    data.put("email", email);
+                    data.put("password", password);
+                    return data;
+                }
+            };
+            RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+            requestQueue.add(stringRequest);
+        } else {
+            Toast.makeText(this, "입력되지 않은 칸이 있습니다!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void register(View view) {
+        Intent intent = new Intent(this, Signup.class);
+        startActivity(intent);
+        finish();
+    }
+
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount acct = completedTask.getResult(ApiException.class);

@@ -30,7 +30,7 @@ public class UtubePlay extends YouTubeBaseActivity implements
     @Override
     public void onInitializationFailure(YouTubePlayer.Provider arg0,
                                         YouTubeInitializationResult arg1) {
-        Toast.makeText(this, "Initialization Fail", Toast.LENGTH_LONG).show();
+        Toast.makeText(this,"Initialization Fail", Toast.LENGTH_LONG).show();
     }
 
     @Override
