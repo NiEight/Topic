@@ -52,6 +52,7 @@
         <activity android:name=".Search"
             android:parentActivityName=".MainActivity"/>
         <activity android:name=".Signup"/>
+        <activity android:name=".UtubePlay"/>
 
     </application>
 

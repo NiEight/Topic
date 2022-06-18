@@ -139,10 +139,13 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
                     case 1001:  //콘텐츠 숨기기 클릭시
                     break;
                     case 1002:
+                        /*
                         int pos = getAdapterPosition();
-                        Intent intent = new Intent(context ,UtubePlay.class);
+                        Intent intent = new Intent(context ,Bookmark.class);
                         intent.putExtra("id", arrayList.get(pos).getVidold());
                         break;
+                        */
+
                 }
                 return false;
             }
