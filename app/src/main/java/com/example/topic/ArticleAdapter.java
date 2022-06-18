@@ -1,6 +1,7 @@
 package com.example.topic;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHolder> implements Filterable {
     private ArrayList<ArticleContents> mlist, filteredList;
     private Context context;
+    int bookMark_count = 0;
 
     public ArticleAdapter(ArrayList<ArticleContents> list, Context context) {
         mlist = list;
@@ -122,19 +125,32 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
             title = itemView.findViewById(R.id.titleText);
             description = itemView.findViewById(R.id.contentText);
 
-            itemView.setOnClickListener(new View.OnClickListener(){
+            itemView.setOnCreateContextMenuListener((View.OnCreateContextMenuListener) context);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int pos = getAdapterPosition();
-                    Log.v("getAdapterPosition",Integer.toString(pos));
-                    if(pos != RecyclerView.NO_POSITION)
-                    {
-                        if(mListener != null){
-                            Log.v("itemView onClick",Integer.toString(pos));
-                            mListener.onItemClick(v, pos);
-                        }
+                    int pos = getAdapterPosition() ;
+                    Intent intent = new Intent(context ,WebViewActivity.class);
+                    intent.putExtra("url", mlist.get(pos).getLink());
+                    context.startActivity(intent);
 
-                    }
+                }
+            });
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    int pos = getAdapterPosition() ;
+
+                    Toast.makeText(context, "북마크에 등록되었습니다.",Toast.LENGTH_LONG).show();
+                    Log.d("str"," "+ title);
+                    Intent intent = new Intent(context ,Bookmark.class);
+                    intent.putExtra("title", mlist.get(pos).getTitle());
+                    intent.putExtra("description", mlist.get(pos).getDescription());
+                    intent.putExtra("link", mlist.get(pos).getLink());
+                    intent.putExtra("a_bookMark_count", bookMark_count++);
+                    context.startActivity(intent);
+                    return true;
                 }
             });
 

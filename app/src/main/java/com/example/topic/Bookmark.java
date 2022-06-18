@@ -1,7 +1,5 @@
 package com.example.topic;
 
-import static androidx.core.content.PackageManagerCompat.LOG_TAG;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,6 +30,11 @@ public class Bookmark extends AppCompatActivity {
     private TabLayout tabLayout;
     private Bookmark_YoutubeFragment bookmark_youtubeFragment;
     private Bookmark_ArticleFragment bookmark_articleFragment;
+    String vidold, name, thumb_url, summary;
+    int y_bookMark_count;
+
+    String title, description, link, bookMark_count;
+    int a_bookMark_count;
 
 
     @Override
@@ -42,6 +45,24 @@ public class Bookmark extends AppCompatActivity {
         //옵션 버튼과 검색 버튼
         option = findViewById(R.id.bookmark_option_button);
         search = findViewById(R.id.bookmark_search_button);
+
+
+        Intent intent = getIntent();
+
+        vidold = intent.getStringExtra("vidold");
+        name = intent.getStringExtra("name");
+        thumb_url = intent.getStringExtra("thumb_url");
+        summary = intent.getStringExtra("summary");
+        y_bookMark_count = intent.getIntExtra("bookMark_count",0);
+        Log.d("str"," "+ y_bookMark_count);
+
+
+        title = intent.getStringExtra("title");
+        description = intent.getStringExtra("description");
+        link= intent.getStringExtra("link");
+        a_bookMark_count = intent.getIntExtra("a_bookMark_count",0);
+
+
 
         option.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,8 +91,9 @@ public class Bookmark extends AppCompatActivity {
         viewPager = findViewById(R.id.bookmark_view_pager);
         tabLayout = findViewById(R.id.bookmark_tab_layout);
 
-        bookmark_youtubeFragment = new Bookmark_YoutubeFragment();
-        bookmark_articleFragment = new Bookmark_ArticleFragment();
+        bookmark_youtubeFragment = new Bookmark_YoutubeFragment(vidold,name,thumb_url,summary,y_bookMark_count);
+
+        bookmark_articleFragment = new Bookmark_ArticleFragment(title, description, link, a_bookMark_count);
 
         tabLayout.setupWithViewPager(viewPager);
 

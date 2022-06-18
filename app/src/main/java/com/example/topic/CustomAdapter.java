@@ -3,6 +3,7 @@ package com.example.topic;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -27,12 +28,15 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
 
     private ArrayList<Contents> arrayList;
     private Context context;
+    int bookMark_count = 0;
+
 
 
     public CustomAdapter(ArrayList<Contents> arrayList, Context context )
     {
         this.arrayList = arrayList;
         this.context = context;
+
     }
 
 
@@ -84,7 +88,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
         return (arrayList != null? arrayList.size() : 0);
     }
 
-    public class CustomViewHolder extends RecyclerView.ViewHolder {
+    public class CustomViewHolder extends RecyclerView.ViewHolder{
 
         ImageView imageView;
         TextView title;
@@ -97,10 +101,10 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
             this.title = itemView.findViewById(R.id.title);
             this.content = itemView.findViewById(R.id.textView_summary);
 
+           // a_menu = itemView.(R.menu.menu_home);
+
+
             itemView.setOnCreateContextMenuListener((View.OnCreateContextMenuListener) context);
-
-
-
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -115,41 +119,26 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
+                    int pos = getAdapterPosition() ;
+                    //;
 
+                    Toast.makeText(context, "북마크에 등록되었습니다.",Toast.LENGTH_LONG).show();
+                    Log.d("str"," "+ bookMark_count);
+                    Intent intent = new Intent(context ,Bookmark.class);
+                    intent.putExtra("vidold", arrayList.get(pos).getVidold());
+                    intent.putExtra("name", arrayList.get(pos).getName());
+                    intent.putExtra("thumb_url", arrayList.get(pos).getThumb_url());
+                    intent.putExtra("summary", arrayList.get(pos).getSummary());
+                    intent.putExtra("bookMark_count", bookMark_count++);
+                    context.startActivity(intent);
                     return true;
                 }
             });
 
 
-
         }
-        public void onCreateContextMenu(ContextMenu a_menu, View a_view, ContextMenu.ContextMenuInfo a_menuInfo) {
-            MenuItem contentsHidding = a_menu.add(Menu.NONE,1001,1,"콘텐츠 숨기기");
-            MenuItem addBookmark = a_menu.add(Menu.NONE,1002,2,"북마크 추가");
 
-            contentsHidding.setOnMenuItemClickListener(onEditMenu);
-            addBookmark.setOnMenuItemClickListener(onEditMenu);
 
-        }
-        private final MenuItem.OnMenuItemClickListener onEditMenu = new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-
-                switch (menuItem.getItemId()){
-                    case 1001:  //콘텐츠 숨기기 클릭시
-                    break;
-                    case 1002:
-                        /*
-                        int pos = getAdapterPosition();
-                        Intent intent = new Intent(context ,Bookmark.class);
-                        intent.putExtra("id", arrayList.get(pos).getVidold());
-                        break;
-                        */
-
-                }
-                return false;
-            }
-        };
 
         }
     }

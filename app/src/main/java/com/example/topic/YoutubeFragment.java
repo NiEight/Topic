@@ -52,7 +52,7 @@ public class YoutubeFragment extends Fragment{
 
     String tag;
     final String serverKey = "4791172370340c7aecacc84ec506ed4f";
-    final String API_KEY="AIzaSyBTr5jPM5af8fTzQh-JFpd2z0eFTfyUC0g";
+    final String API_KEY="AIzaSyCj8kWg557Lj2JvsBtq0EtEMCbYvhfPqT4";
     private String videoID = "";
 
     // TODO: Rename and change types of parameters
