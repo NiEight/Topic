@@ -1,31 +1,55 @@
 package com.example.topic;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.nfc.Tag;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 
 public class ArticleFragment extends Fragment {
 
 
-    ArrayList<Contents> contents;
-    RecyclerView customListView;
+    ArrayList<ArticleContents> mlist;
+    RecyclerView customListView2;
     RecyclerView.LayoutManager layoutManager;
-    RecyclerView.Adapter customAdapter;
+    ArticleAdapter articltAdapter;
     private Context ct;
+    String naverHtml;
+    String tag = "뉴스";
+    String k;
 
     // TODO: Rename and change types of parameters
 
-    public ArticleFragment() {
+    public ArticleFragment(String tag) {
+        this.tag = tag;
         // Required empty public constructor
     }
 
@@ -37,34 +61,125 @@ public class ArticleFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
     }
+    @SuppressLint("HandlerLeak")
+    Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            Bundle bun = msg.getData();
+            naverHtml = bun.getString("NAVER_HTML");
+            naverHtml = naverHtml.replaceAll("<b>","");
+            naverHtml = naverHtml.replaceAll("</b>","");
+            naverHtml = naverHtml.replaceAll("&lt;", "<");
+            naverHtml = naverHtml.replaceAll("&gt;", ">");
+            naverHtml = naverHtml.replaceAll("&amp;", "&");
 
+            try {
+                JSONObject jsonObject = new JSONObject(naverHtml);
+                JSONArray newsArray = jsonObject.getJSONArray("items");
+                mlist.clear();
+                for(int i = 0; i < newsArray.length(); i++)
+                {
+                    JSONObject newsObject = newsArray.getJSONObject(i);
+                    ArticleContents item = new ArticleContents(newsObject.getString("title"),newsObject.getString("description"),newsObject.getString("link"));
+
+
+
+
+                    mlist.add(item);
+                    articltAdapter = new ArticleAdapter(mlist, ct);
+                    customListView2.setAdapter(articltAdapter);
+                    articltAdapter.notifyDataSetChanged();
+                }
+
+
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+    };
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_youtube, container, false);
-        customListView = (RecyclerView) rootView.findViewById(R.id.listView_custom);
-        customListView.setHasFixedSize(true);           //리사이클러뷰 기존성능  강화
+        View rootView = inflater.inflate(R.layout.fragment_article, container, false);
+        customListView2 = (RecyclerView) rootView.findViewById(R.id.listView_custom2);
         ct = container.getContext();
+        mlist = new ArrayList<>();
         layoutManager = new LinearLayoutManager(ct);
 
 
 
+        customListView2.setHasFixedSize(true);
+        customListView2.setLayoutManager(layoutManager);
+
+        SearchNews(tag);
+
         //data를 가져와서 어답터와 연결해 준다. 서버에서 가져오는게 대부분 이다.
-        contents = new ArrayList<>();
-        contents.add(new Contents("Robert Downey Jr.", "https://image.tmdb.org/t/p/w600_and_h900_bestv2/5qHNjhtjMD4YWH3UP0rm4tKwxCL.jpg", "로버트 존 다우니 2세는 미국의 배우, 영화 제작자, 극작가이자, 싱어송라이터, 코미디언이다. 스크린 데뷔작은 1970년 만 5세 때 아버지 로버트 다우니 시니어의 영화 작품 《파운드》이다."));
-        contents.add(new Contents("Scarlett Johansson", "https://image.tmdb.org/t/p/w600_and_h900_bestv2/6NsMbJXRlDZuDzatN2akFdGuTvx.jpg", "1984년 뉴욕에서 태어난 스칼렛 요한슨은 여덟 살 때 에단 호크가 주연한 〈소피스트리〉라는 연극에 출연하면서 연기를 시작했다. 로버트 레드포드 감독의 〈호스 위스퍼러〉에서 경주 사고로 정신적인 충격을 받은 십대 소녀 그레이스를 연기해 전세계적으로 알려진 스칼렛 요한슨은 소피아 코폴라 감독의 〈사랑도 통역이 되나요?〉로 2003 베니스 영화제 여우주연상을 수상해 세계의 주목을 받는 기대주가 되었다."));
-        contents.add(new Contents("Cho Yeo-jeong", "https://image.tmdb.org/t/p/w600_and_h900_bestv2/5MgWM8pkUiYkj9MEaEpO0Ir1FD9.jpg", "Cho Yeo-jeong (조여정) is a South Korean actress. Born on February 10, 1981, she began her career as a model in 1997 at the age of 16 and launched her acting career two years later. She is best known for her roles in the provocative period films “The Servant” (2010) and “The Concubine” (2012) and the television dramas “I Need Romance” (2011), “Haeundae Lovers” (2012), “Divorce Lawyer in Love” (2015) and “Perfect Wife” (2017)."));
-        contents.add(new Contents("Scarlett Johansson", "https://image.tmdb.org/t/p/w600_and_h900_bestv2/6NsMbJXRlDZuDzatN2akFdGuTvx.jpg", "1984년 뉴욕에서 태어난 스칼렛 요한슨은 여덟 살 때 에단 호크가 주연한 〈소피스트리〉라는 연극에 출연하면서 연기를 시작했다. 로버트 레드포드 감독의 〈호스 위스퍼러〉에서 경주 사고로 정신적인 충격을 받은 십대 소녀 그레이스를 연기해 전세계적으로 알려진 스칼렛 요한슨은 소피아 코폴라 감독의 〈사랑도 통역이 되나요?〉로 2003 베니스 영화제 여우주연상을 수상해 세계의 주목을 받는 기대주가 되었다."));
-        contents.add(new Contents("Robert Downey Jr.", "https://image.tmdb.org/t/p/w600_and_h900_bestv2/5qHNjhtjMD4YWH3UP0rm4tKwxCL.jpg", "로버트 존 다우니 2세는 미국의 배우, 영화 제작자, 극작가이자, 싱어송라이터, 코미디언이다. 스크린 데뷔작은 1970년 만 5세 때 아버지 로버트 다우니 시니어의 영화 작품 《파운드》이다."));
 
 
-        customAdapter = new CustomAdapter(contents);
-        customListView.setAdapter(customAdapter);
-        //customListView.setOn
+
+
 
 
         return rootView;
-
-
     }
+
+            private void SearchNews( final String searchWord) {
+
+
+                    new Thread() {
+                        @Override
+                        public void run() {
+
+                            String clientId = "Tj5VOBHJ7wITkcUdmlhT";//애플리케이션 클라이언트 아이디값";
+                            String clientSecret = "rNyCg7ZYpn";//애플리케이션 클라이언트 시크릿값";
+                            String text = searchWord;
+                            try {
+
+                                String apiURL = "https://openapi.naver.com/v1/search/news.json?query=" + text + "&display=20"; // json 결과
+                                URL url = new URL(apiURL);
+                                HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                                con.setRequestMethod("GET");
+                                con.setRequestProperty("X-Naver-Client-Id", clientId);
+                                con.setRequestProperty("X-Naver-Client-Secret", clientSecret);
+                                int responseCode = con.getResponseCode();
+                                BufferedReader br;
+                                if (responseCode == 200) { // 정상 호출
+                                    br = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
+                                } else {  // 에러 발생
+                                    br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+                                }
+                                String inputLine;
+                                StringBuffer response = new StringBuffer();
+                                while ((inputLine = br.readLine()) != null) {
+                                    response.append(inputLine);
+                                    response.append("\n");
+                                }
+                                br.close();
+
+                                String naverHtml = response.toString();
+
+                                Bundle bun = new Bundle();
+                                bun.putString("NAVER_HTML", naverHtml);
+                                Message msg = handler.obtainMessage();
+                                msg.setData(bun);
+                                handler.sendMessage(msg);
+
+                                //testText.setText(response.toString());
+                                //System.out.println(response.toString());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }.start();
+
+
+
+            }
 }
+
+
+

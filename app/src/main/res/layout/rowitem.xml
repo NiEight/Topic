@@ -17,6 +17,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
     <LinearLayout
+        android:id="@+id/item_linear"
         android:layout_width="wrap_content"
         android:layout_height="150dp"
         android:orientation="vertical"
@@ -25,13 +26,15 @@
         <TextView
             android:id="@+id/title"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="25dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="30dp"
             android:text="타이틀"
-            android:textSize="30dp"
+            android:textColor="@color/white"
+            android:textSize="20dp"
             app:layout_constraintStart_toEndOf="@+id/imageView_thumb"
             app:layout_constraintTop_toTopOf="@+id/imageView_thumb" />
+
 
 
         <TextView
@@ -41,9 +44,26 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:text="TextView"
+            android:textColor="@color/white"
             app:layout_constraintStart_toEndOf="@+id/imageView_thumb"
             app:layout_constraintTop_toBottomOf="@+id/title" />
+
+
     </LinearLayout>
+
+    <Button
+        android:id="@+id/youtube_overflowbtn"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:background="@drawable/overflow"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/item_linear"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+
+
+
 
 
 

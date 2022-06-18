@@ -3,6 +3,7 @@
     <item
         android:id="@+id/hiddingContents"
         android:title="콘텐츠 숨기기"
+
         />
     <item
         android:id="@+id/addBookmark"

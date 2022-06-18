@@ -2,6 +2,7 @@ package com.example.topic;
 
 import static androidx.core.content.PackageManagerCompat.LOG_TAG;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
@@ -54,6 +55,11 @@ public class Search extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
                 adapter.addItem(ContextCompat.getDrawable(getApplicationContext(),R.drawable.search),
                         ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_baseline_clear_24) ,query);
+
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+
+                intent.putExtra("query",query);
+                startActivity(intent);
                 return true;
             }
             @Override

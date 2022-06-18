@@ -115,8 +115,8 @@ public class ListViewAdapter extends BaseAdapter implements Filterable {
             filteredItemList = (ArrayList<SearchList>) filterResults.values ;
 
             // notify
-            if (filterResults.count > 0) {
-                notifyDataSetChanged() ;
+            if (filterResults.count > 0){
+                notifyDataSetChanged();
             } else {
                 notifyDataSetInvalidated() ;
             }

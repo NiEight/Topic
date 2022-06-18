@@ -56,7 +56,7 @@ public class Bookmark_YoutubeFragment extends Fragment{
         contents = new ArrayList<>();
         //북마크 콘텐츠 추가 해야함.
 
-        customAdapter = new CustomAdapter(contents);
+        customAdapter = new CustomAdapter(contents, ct);
 
         customAdapter.setOnItemClickListener(new CustomAdapter.OnItemClickListener() {
             @Override

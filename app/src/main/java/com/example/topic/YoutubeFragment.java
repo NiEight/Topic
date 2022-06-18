@@ -1,13 +1,21 @@
 package com.example.topic;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -15,7 +23,21 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.zip.Inflater;
 
 
 public class YoutubeFragment extends Fragment{
@@ -26,10 +48,17 @@ public class YoutubeFragment extends Fragment{
     CustomAdapter customAdapter;
     private Context ct;
 
+    AsyncTask<?, ?, ?> searchTask;
+
+    String tag;
+    final String serverKey = "4791172370340c7aecacc84ec506ed4f";
+    final String API_KEY="AIzaSyBTr5jPM5af8fTzQh-JFpd2z0eFTfyUC0g";
+    private String videoID = "";
+
     // TODO: Rename and change types of parameters
 
-    public YoutubeFragment() {
-        // Required empty public constructor
+    public YoutubeFragment(String tag) {
+        this.tag = tag;
     }
 
     // TODO: Rename and change types and number of parameters
@@ -39,45 +68,167 @@ public class YoutubeFragment extends Fragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_youtube, container, false);
         customListView = (RecyclerView) rootView.findViewById(R.id.listView_custom);
+
         customListView.setHasFixedSize(true);           //리사이클러뷰 기존성능  강화
         ct = container.getContext();
         layoutManager = new LinearLayoutManager(ct);
-
-
+        customListView.setLayoutManager(layoutManager);
 
         //data를 가져와서 어답터와 연결
         contents = new ArrayList<>();
-        contents.add(new Contents("Robert Downey Jr.", "https://image.tmdb.org/t/p/w600_and_h900_bestv2/5qHNjhtjMD4YWH3UP0rm4tKwxCL.jpg", "로버트 존 다우니 2세는 미국의 배우, 영화 제작자, 극작가이자, 싱어송라이터, 코미디언이다. 스크린 데뷔작은 1970년 만 5세 때 아버지 로버트 다우니 시니어의 영화 작품 《파운드》이다."));
-        contents.add(new Contents("Scarlett Johansson", "https://image.tmdb.org/t/p/w600_and_h900_bestv2/6NsMbJXRlDZuDzatN2akFdGuTvx.jpg", "1984년 뉴욕에서 태어난 스칼렛 요한슨은 여덟 살 때 에단 호크가 주연한 〈소피스트리〉라는 연극에 출연하면서 연기를 시작했다. 로버트 레드포드 감독의 〈호스 위스퍼러〉에서 경주 사고로 정신적인 충격을 받은 십대 소녀 그레이스를 연기해 전세계적으로 알려진 스칼렛 요한슨은 소피아 코폴라 감독의 〈사랑도 통역이 되나요?〉로 2003 베니스 영화제 여우주연상을 수상해 세계의 주목을 받는 기대주가 되었다."));
-        contents.add(new Contents("Cho Yeo-jeong", "https://image.tmdb.org/t/p/w600_and_h900_bestv2/5MgWM8pkUiYkj9MEaEpO0Ir1FD9.jpg", "Cho Yeo-jeong (조여정) is a South Korean actress. Born on February 10, 1981, she began her career as a model in 1997 at the age of 16 and launched her acting career two years later. She is best known for her roles in the provocative period films “The Servant” (2010) and “The Concubine” (2012) and the television dramas “I Need Romance” (2011), “Haeundae Lovers” (2012), “Divorce Lawyer in Love” (2015) and “Perfect Wife” (2017)."));
-        contents.add(new Contents("Scarlett Johansson", "https://image.tmdb.org/t/p/w600_and_h900_bestv2/6NsMbJXRlDZuDzatN2akFdGuTvx.jpg", "1984년 뉴욕에서 태어난 스칼렛 요한슨은 여덟 살 때 에단 호크가 주연한 〈소피스트리〉라는 연극에 출연하면서 연기를 시작했다. 로버트 레드포드 감독의 〈호스 위스퍼러〉에서 경주 사고로 정신적인 충격을 받은 십대 소녀 그레이스를 연기해 전세계적으로 알려진 스칼렛 요한슨은 소피아 코폴라 감독의 〈사랑도 통역이 되나요?〉로 2003 베니스 영화제 여우주연상을 수상해 세계의 주목을 받는 기대주가 되었다."));
-        contents.add(new Contents("Robert Downey Jr.", "https://image.tmdb.org/t/p/w600_and_h900_bestv2/5qHNjhtjMD4YWH3UP0rm4tKwxCL.jpg", "로버트 존 다우니 2세는 미국의 배우, 영화 제작자, 극작가이자, 싱어송라이터, 코미디언이다. 스크린 데뷔작은 1970년 만 5세 때 아버지 로버트 다우니 시니어의 영화 작품 《파운드》이다."));
+        searchTask = new SearchTask().execute();
 
-
-        customAdapter = new CustomAdapter(contents);
-
-        customAdapter.setOnItemClickListener(new CustomAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View v, int pos) {
-               //클릭 이벤트 구현
-            }
-        });
-        customListView.setAdapter(customAdapter);
-
-
-
-
+        registerForContextMenu(customListView);
         return rootView;
 
 
     }
 
+
+    private class SearchTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                paringJsonData(getUtube());
+            } catch (JSONException | IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+
+
+            customAdapter = new CustomAdapter(contents,ct);
+            customListView.setAdapter(customAdapter);
+            customAdapter.notifyDataSetChanged();
+
+        }
+    }
+
+    //유튜브 url에 접근하여 검색한 결과들을 json 객체로 만들어준다
+    public JSONObject getUtube() throws IOException {
+        String originUrl;
+        if(tag==null)
+            originUrl = "https://www.googleapis.com/youtube/v3/search?"
+                + "part=snippet&q=" + "뉴스"
+                + "&key="+ API_KEY+"&maxResults=50";
+        else
+            originUrl = "https://www.googleapis.com/youtube/v3/search?"
+                    + "part=snippet&q=" + tag
+                    + "&key="+ API_KEY+"&maxResults=50";
+
+        String myUrl = String.format(originUrl);
+
+        URL url = new URL(myUrl);
+
+        HttpURLConnection connection =(HttpURLConnection)url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.setReadTimeout(10000);
+        connection.setConnectTimeout(15000);
+        connection.connect();
+
+        String line;
+        String result="";
+        InputStream inputStream=connection.getInputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        StringBuffer response = new StringBuffer();
+
+        while ((line = reader.readLine())!=null){
+            response.append(line);
+        }
+        System.out.println("검색결과"+ response);
+        result=response.toString();
+
+
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject = new JSONObject(result);
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return jsonObject;
+
+    }
+
+    //json 객체를 가지고 와서 필요한 데이터를 파싱한다.
+    //파싱을 하면 여러가지 값을 얻을 수 있는데 필요한 값들을 세팅하셔서 사용하시면 됩니다.
+    private void paringJsonData(JSONObject jsonObject) throws JSONException {
+        //재검색할때 데이터들이 쌓이는걸 방지하기 위해 리스트를 초기화 시켜준다.
+        contents.clear();
+
+        JSONArray contacts = jsonObject.getJSONArray("items");
+
+        for (int i = 0; i < contacts.length(); i++) {
+            JSONObject c = contacts.getJSONObject(i);
+            String kind =  c.getJSONObject("id").getString("kind"); // 종류를 체크하여 playlist도 저장
+            if(kind.equals("youtube#video")){
+                vodid = c.getJSONObject("id").getString("videoId"); // 유튜브
+                // 동영상
+                // 아이디
+                // 값입니다.
+                // 재생시
+                // 필요합니다.
+            }else{
+                vodid = c.getJSONObject("id").getString("playlistId"); // 유튜브
+            }
+
+            String title = c.getJSONObject("snippet").getString("title"); //유튜브 제목을 받아옵니다
+            String changString = stringToHtmlSign(title);
+
+
+            String description = c.getJSONObject("snippet").getString("description");
+            String changString2 = stringToHtmlSign(description);
+
+            String imgUrl = c.getJSONObject("snippet").getJSONObject("thumbnails")
+                    .getJSONObject("default").getString("url");  //썸네일 이미지 URL값
+
+            //JSON으로 파싱한 정보들을 객체화 시켜서 리스트에 담아준다.
+
+            contents.add(new Contents(vodid, changString,imgUrl,changString2));
+
+
+        }
+    }
+
+    String vodid = "";
+
+
+    //영상 제목을 받아올때 &quot; &#39; 문자가 그대로 출력되기 때문에 다른 문자로 대체 해주기 위해 사용하는 메서드
+    private String stringToHtmlSign(String str) {
+
+        return str.replaceAll("&amp;", "[&]")
+
+                .replaceAll("[<]", "&lt;")
+
+                .replaceAll("[>]", "&gt;")
+
+                .replaceAll("&quot;", "'")
+
+                .replaceAll("&#39;", "'");
+    }
+
+
 }
+
+
+
 

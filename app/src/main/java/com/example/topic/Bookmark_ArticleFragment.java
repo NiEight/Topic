@@ -53,7 +53,7 @@ public class Bookmark_ArticleFragment extends Fragment {
         contents = new ArrayList<>();
         //북마크 기사 추가 해야함.
 
-        customAdapter = new CustomAdapter(contents);
+        customAdapter = new CustomAdapter(contents, ct);
         customListView.setAdapter(customAdapter);
         //customListView.setOn
 
