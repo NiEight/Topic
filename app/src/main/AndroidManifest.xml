@@ -56,6 +56,8 @@
         <activity android:name=".Option"/>
         <activity android:name=".TopickInfo"/>
         <activity android:name=".Unregister"/>
+        <activity android:name=".CheckPassword"/>
+        <activity android:name=".ChangePassword"/>
         <activity android:name=".WebViewActivity"/>
 
     </application>
