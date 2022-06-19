@@ -39,7 +39,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.zip.Inflater;
 
-
+//MainActivity 탭 레이아웃 중 하나인 YoutubeFragment
+//리싸이클러뷰 사용
 public class YoutubeFragment extends Fragment{
 
     ArrayList<Contents> contents;
@@ -50,18 +51,17 @@ public class YoutubeFragment extends Fragment{
 
     AsyncTask<?, ?, ?> searchTask;
 
+
     String tag;
-    final String serverKey = "4791172370340c7aecacc84ec506ed4f";
+    //Youtube 검색을 위한 API_KEY
     final String API_KEY="AIzaSyCj8kWg557Lj2JvsBtq0EtEMCbYvhfPqT4";
     private String videoID = "";
 
-    // TODO: Rename and change types of parameters
 
     public YoutubeFragment(String tag) {
         this.tag = tag;
     }
 
-    // TODO: Rename and change types and number of parameters
 
 
     @Override
@@ -71,7 +71,7 @@ public class YoutubeFragment extends Fragment{
 
     }
 
-
+    //뷰어 생성(검색 결과)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -86,8 +86,6 @@ public class YoutubeFragment extends Fragment{
         //data를 가져와서 어답터와 연결
         contents = new ArrayList<>();
         searchTask = new SearchTask().execute();
-
-        registerForContextMenu(customListView);
         return rootView;
 
 
@@ -127,7 +125,7 @@ public class YoutubeFragment extends Fragment{
         String originUrl;
         if(tag==null)
             originUrl = "https://www.googleapis.com/youtube/v3/search?"
-                + "part=snippet&q=" + "뉴스"
+                + "part=snippet&q=" + "IT"
                 + "&key="+ API_KEY+"&maxResults=50";
         else
             originUrl = "https://www.googleapis.com/youtube/v3/search?"
@@ -181,17 +179,12 @@ public class YoutubeFragment extends Fragment{
             JSONObject c = contacts.getJSONObject(i);
             String kind =  c.getJSONObject("id").getString("kind"); // 종류를 체크하여 playlist도 저장
             if(kind.equals("youtube#video")){
-                vodid = c.getJSONObject("id").getString("videoId"); // 유튜브
-                // 동영상
-                // 아이디
-                // 값입니다.
-                // 재생시
-                // 필요합니다.
+                vodid = c.getJSONObject("id").getString("videoId"); // 유튜브 동영상 아이디 값
             }else{
-                vodid = c.getJSONObject("id").getString("playlistId"); // 유튜브
+                vodid = c.getJSONObject("id").getString("playlistId");
             }
 
-            String title = c.getJSONObject("snippet").getString("title"); //유튜브 제목을 받아옵니다
+            String title = c.getJSONObject("snippet").getString("title"); //유튜브 제목
             String changString = stringToHtmlSign(title);
 
 
@@ -203,6 +196,7 @@ public class YoutubeFragment extends Fragment{
 
             //JSON으로 파싱한 정보들을 객체화 시켜서 리스트에 담아준다.
 
+            //뷰어에 추가. 어댑터 set후 뷰어에 나타남
             contents.add(new Contents(vodid, changString,imgUrl,changString2));
 
 

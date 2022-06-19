@@ -1,7 +1,7 @@
 package com.example.topic;
 
 import android.graphics.drawable.Drawable;
-
+//서치 리스트를 set하고 get하기 위함.
 public class SearchList {
 
     private Drawable iconDrawble, clearicon;

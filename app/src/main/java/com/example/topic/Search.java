@@ -17,7 +17,7 @@ import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.List;
-
+//검색 화면
 public class Search extends AppCompatActivity {
 
     ListView listview;
@@ -41,8 +41,6 @@ public class Search extends AppCompatActivity {
         ListViewAdapter adapter;
         // Adapter 생성
         adapter = new ListViewAdapter() ;
-
-        // 리스트뷰 참조 및 Adapter달기
         listview = (ListView) findViewById(R.id.search_List);
 
 
@@ -50,11 +48,15 @@ public class Search extends AppCompatActivity {
        ;
 
         searchView = findViewById(R.id.search_bar);
+        //검색 결과 전달
+        //어뎁터에를 통해 리스트뷰에 전달
+        //검색 결과는 메인 화면에 전달
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 adapter.addItem(ContextCompat.getDrawable(getApplicationContext(),R.drawable.search),
                         ContextCompat.getDrawable(getApplicationContext(),R.drawable.ic_baseline_clear_24) ,query);
+                listview.setAdapter(adapter);
 
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 
@@ -67,7 +69,7 @@ public class Search extends AppCompatActivity {
                 return false;
             }
         });
-        listview.setAdapter(adapter);
+
 
 
     }

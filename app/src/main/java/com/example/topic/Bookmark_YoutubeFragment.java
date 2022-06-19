@@ -29,7 +29,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-
+//북마크 탭 레이아웃에 들어갈 기사 Fragment
+//리싸이클러뷰 사용
 public class Bookmark_YoutubeFragment extends Fragment{
 
     ArrayList<Contents> contents;
@@ -53,6 +54,7 @@ public class Bookmark_YoutubeFragment extends Fragment{
 
     }
 
+    //리사이클러뷰의 화면 생성
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

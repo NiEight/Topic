@@ -39,7 +39,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
+//메인 화면
 public class MainActivity extends AppCompatActivity {
 
     private Toolbar toolbar;
@@ -156,17 +156,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //탭 구현
+        //탭 레이아웃 구현
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         viewPager = findViewById(R.id.view_pager);
         tabLayout = findViewById(R.id.tab_layout);
+
 
         youtubeFragment = new YoutubeFragment(tag);
         articleFragment = new ArticleFragment(tag);
 
         tabLayout.setupWithViewPager(viewPager);
 
+        //탭 추가
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), 0);
         viewPagerAdapter.addFragment(youtubeFragment, "Yotube");
         viewPagerAdapter.addFragment(articleFragment, "Article");
@@ -177,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
+    //탭 레이아웃을 채우기 위한 어댑터 클래스
     private class ViewPagerAdapter extends FragmentPagerAdapter {
 
         private List<Fragment> fragments = new ArrayList<>();

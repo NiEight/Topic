@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
-
+//검색 결과를 보여주기 위한 리스트뷰어댑터
 public class ListViewAdapter extends BaseAdapter implements Filterable {
 
     private ArrayList<SearchList> listViewItemList = new ArrayList<SearchList>();
@@ -84,6 +84,8 @@ public class ListViewAdapter extends BaseAdapter implements Filterable {
 
         return listFilter ;
     }
+
+    //리스트를 추가하고 갱신하기 위한 클래스
     private class ListFilter extends Filter {
 
         @Override

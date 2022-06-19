@@ -19,7 +19,8 @@ import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
-
+//MainActivity에서 북마크 추가 결과를 보는 화면
+//북마크 버튼을 통해 이동 가능
 public class Bookmark extends AppCompatActivity {
 
 
@@ -43,9 +44,11 @@ public class Bookmark extends AppCompatActivity {
         option = findViewById(R.id.bookmark_option_button);
         search = findViewById(R.id.bookmark_search_button);
 
+        //로그인한 사용자의 이메일을 다음화면에 전송
         Intent inIntent = getIntent();
         email = inIntent.getStringExtra("email");
 
+        //옵션 버튼 터치시 옵션 화면으로 이동
         option.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -55,6 +58,7 @@ public class Bookmark extends AppCompatActivity {
             }
         });
 
+        //검색 버튼 터치시 검색 화면으로 이동
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,6 +71,7 @@ public class Bookmark extends AppCompatActivity {
 
         //북마크 탭 화면
         //탭 구현
+        //MainActivity와 동일
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         viewPager = findViewById(R.id.bookmark_view_pager);
@@ -87,7 +92,7 @@ public class Bookmark extends AppCompatActivity {
 
     }
 
-
+    //MainActivity와 동일
     private class ViewPagerAdapter extends FragmentPagerAdapter {
 
         private List<Fragment> fragments = new ArrayList<>();

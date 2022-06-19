@@ -1,5 +1,5 @@
 package com.example.topic;
-
+//ArticleFragment에 들어갈 정보를 저장하고 사용하기 위한 클래스
 public class ArticleContents {
 
     private String title;       //기사 제목

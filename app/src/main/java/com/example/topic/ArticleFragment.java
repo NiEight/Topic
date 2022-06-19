@@ -33,7 +33,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
-
+//메인 화면 - 탭 레이아웃에 들어갈 기사 Fragment
 public class ArticleFragment extends Fragment {
 
 
@@ -46,14 +46,11 @@ public class ArticleFragment extends Fragment {
     String tag = "뉴스";
     String k;
 
-    // TODO: Rename and change types of parameters
 
     public ArticleFragment(String tag) {
         this.tag = tag;
-        // Required empty public constructor
     }
 
-    // TODO: Rename and change types and number of parameters
 
 
     @Override
@@ -61,6 +58,10 @@ public class ArticleFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
     }
+
+    //SearchNews 메소드중 실행
+    //메소드 안에서 받아온 정보를 jsonObject로 변경하고 값 추출 후
+    //리사이클러뷰에 적용
     @SuppressLint("HandlerLeak")
     Handler handler = new Handler() {
         public void handleMessage(Message msg) {
@@ -116,7 +117,6 @@ public class ArticleFragment extends Fragment {
 
         SearchNews(tag);
 
-        //data를 가져와서 어답터와 연결해 준다. 서버에서 가져오는게 대부분 이다.
 
 
 
@@ -125,14 +125,14 @@ public class ArticleFragment extends Fragment {
 
         return rootView;
     }
-
+            //네이버 API를 사용한 검색 기능
+            //호출시 키워드에 맞는 검색 결과 도출
+            //Handler를 이용해서 도출한 검색결과를 jsonObject로 변경 및 리스트뷰에 적용
             private void SearchNews( final String searchWord) {
-
 
                     new Thread() {
                         @Override
                         public void run() {
-
                             String clientId = "Tj5VOBHJ7wITkcUdmlhT";//애플리케이션 클라이언트 아이디값";
                             String clientSecret = "rNyCg7ZYpn";//애플리케이션 클라이언트 시크릿값";
                             String text = searchWord;
@@ -142,8 +142,8 @@ public class ArticleFragment extends Fragment {
                                 URL url = new URL(apiURL);
                                 HttpURLConnection con = (HttpURLConnection) url.openConnection();
                                 con.setRequestMethod("GET");
-                                con.setRequestProperty("X-Naver-Client-Id", clientId);
-                                con.setRequestProperty("X-Naver-Client-Secret", clientSecret);
+                                con.setRequestProperty("X-Naver-Client-Id", clientId);          //클라이언트 아이디
+                                con.setRequestProperty("X-Naver-Client-Secret", clientSecret);  //클라이언트 시크릿
                                 int responseCode = con.getResponseCode();
                                 BufferedReader br;
                                 if (responseCode == 200) { // 정상 호출
@@ -167,8 +167,6 @@ public class ArticleFragment extends Fragment {
                                 msg.setData(bun);
                                 handler.sendMessage(msg);
 
-                                //testText.setText(response.toString());
-                                //System.out.println(response.toString());
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }

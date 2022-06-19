@@ -1,5 +1,6 @@
 package com.example.topic;
 
+//YotubeFragment에 사용되는 콘텐츠들의 정보를 받고 사용하기 위한 클래스
 class Contents {
     private String name;
     private String summary;

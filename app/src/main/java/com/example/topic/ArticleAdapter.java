@@ -26,22 +26,19 @@ import com.android.volley.toolbox.Volley;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-
-public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHolder> implements Filterable {
+//ArticleFragment에 들어갈 리스트뷰에 관한 이벤트 처리 클래스
+public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHolder> {
     private ArrayList<ArticleContents> mlist, filteredList;
     private Context context;
 
     private String type, header, text, url;
     private String URL = "http://10.0.2.2/topick/articlebookmark.php";
 
-    int bookMark_count = 0;
 
     public ArticleAdapter(ArrayList<ArticleContents> list, Context context) {
         mlist = list;
         this.filteredList = list;
         this.context = context;
-
-        Log.v("Adapter생성자 호출","Adapter생성자");
     }
 
     public ArrayList<ArticleContents> getFilteredList() {
@@ -50,42 +47,6 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
 
     public void setFilteredList(ArrayList<ArticleContents> filteredList) {
         this.filteredList = filteredList;
-    }
-
-    @Override
-    public Filter getFilter() {
-        return new Filter() {
-
-            //검색 창에 단어 입력하면 요출 되는 메서드
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                Log.v("performFiltering", "performFiltering :"+  constraint);
-                String charString = constraint.toString();
-                if(charString.isEmpty()) {
-                    filteredList = mlist;
-                } else {
-                    ArrayList<ArticleContents> filteringList = new ArrayList<>();
-                    for(ArticleContents name : mlist) {
-                        if(name.getTitle().toLowerCase().contains(charString.toLowerCase())) {
-                            filteringList.add(name);
-                        }
-                    }
-                    filteredList = filteringList;
-                }
-                FilterResults filterResults = new FilterResults();
-                filterResults.values = filteredList;
-                return filterResults;
-            }
-
-            //performFiltering 메서드에서 필터링한 값을 매개변수로 받아 호출되는 메서드
-            //마지막에 notifyDataSetChanged(); 호출하여 필터된 결과를 recyclerView를 출력한다.
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                Log.v("publishResults", "publishResults ");
-                filteredList = (ArrayList<ArticleContents>)results.values;
-                notifyDataSetChanged();
-            }
-        };
     }
 
 

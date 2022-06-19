@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-//ArrayAdapter implements AdapterView.OnItemClickListener
+//YotubeFragment 리싸이클러뷰에 들어갈 Contents 배정
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomViewHolder> {
 
     private ArrayList<Contents> arrayList;
@@ -83,6 +83,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
         return holder;
     }
 
+    //뷰에서 보여질 이미지와 텍스트 set
+    //Glide를 이용하여 이미지 로드
     @Override
     public void onBindViewHolder(@NonNull CustomAdapter.CustomViewHolder holder, int position) {
 
@@ -119,6 +121,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.CustomView
 
             itemView.setOnCreateContextMenuListener((View.OnCreateContextMenuListener) context);
 
+            //뷰 항목 클릭시 UtubePlay.class로 이동
+            //UtubePlay.class - Youtube 영상 재생 클래스
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

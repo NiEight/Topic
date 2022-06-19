@@ -40,7 +40,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-
+//북마크 탭 레이아웃에 들어갈 기사 Fragment
+//리싸이클러뷰 사용
 public class Bookmark_ArticleFragment extends Fragment {
     ArrayList<ArticleContents> mlist;
     RecyclerView b_customListView;
@@ -63,6 +64,7 @@ public class Bookmark_ArticleFragment extends Fragment {
 
     }
 
+    //리사이클러뷰의 화면 생성
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
