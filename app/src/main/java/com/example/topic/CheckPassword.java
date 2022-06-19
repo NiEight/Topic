@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -28,6 +29,7 @@ import java.util.Map;
 public class CheckPassword extends AppCompatActivity {
     private EditText edit_pw_check;
     private ImageButton pwCheckBtn;
+    private TextView forget_password;
     private Button backBtn;
 
     private String email, password;
@@ -40,6 +42,7 @@ public class CheckPassword extends AppCompatActivity {
 
         edit_pw_check = findViewById(R.id.edit_pw_check);
         pwCheckBtn = findViewById(R.id.pwCheckBtn);
+        forget_password = findViewById(R.id.forget_password);
         backBtn = findViewById(R.id.backBtn);
 
         Intent inIntent = getIntent();
@@ -50,6 +53,14 @@ public class CheckPassword extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 onBackPressed();
+            }
+        });
+
+        forget_password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CheckPassword.this, FindPw.class);
+                startActivity(intent);
             }
         });
 

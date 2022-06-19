@@ -52,7 +52,14 @@
         <activity android:name=".CheckPassword"/>
         <activity android:name=".ChangePassword"/>
         <activity android:name=".WebViewActivity"/>
+        <activity android:name=".FindPw"/>
 
     </application>
+
+    <queries>
+        <intent>
+            <action android:name="com.google.android.youtube.api.service.START" />
+        </intent>
+    </queries>
 
 </manifest>

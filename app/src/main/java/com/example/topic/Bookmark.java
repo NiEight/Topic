@@ -30,6 +30,7 @@ public class Bookmark extends AppCompatActivity {
     private TabLayout tabLayout;
     private Bookmark_YoutubeFragment bookmark_youtubeFragment;
     private Bookmark_ArticleFragment bookmark_articleFragment;
+    private String email;
 
 
 
@@ -42,10 +43,14 @@ public class Bookmark extends AppCompatActivity {
         option = findViewById(R.id.bookmark_option_button);
         search = findViewById(R.id.bookmark_search_button);
 
+        Intent inIntent = getIntent();
+        email = inIntent.getStringExtra("email");
+
         option.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), Option.class);
+                intent.putExtra("email", email);
                 startActivity(intent);
             }
         });

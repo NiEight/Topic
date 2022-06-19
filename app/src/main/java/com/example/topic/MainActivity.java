@@ -87,9 +87,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 Intent intent = new Intent(getApplicationContext(), Bookmark.class);
+                intent.putExtra("email", email);
                 startActivity(intent);
-
-
             }
         });
         //검색 버튼

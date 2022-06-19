@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -33,6 +34,8 @@ import com.google.android.gms.tasks.Task;
 import com.kakao.sdk.user.UserApiClient;
 import com.kakao.sdk.user.model.Account;
 
+import org.w3c.dom.Text;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -41,6 +44,8 @@ import java.util.Map;
 public class LoginActivity extends AppCompatActivity{
 
     private EditText idText, pwText;
+    private TextView findPW;
+
     private String email, password;
     private String URL = "http://10.0.2.2/topick/login.php";
     private long pressedTime = 0;
@@ -54,9 +59,15 @@ public class LoginActivity extends AppCompatActivity{
 
         idText = findViewById(R.id.idText);
         pwText = findViewById(R.id.pwText);
+        findPW = findViewById(R.id.findPW);
 
-
-
+        findPW.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, FindPw.class);
+                startActivity(intent);
+            }
+        });
 
     }
     //뒤로가기 2번 했을 시 앱 종료
@@ -122,8 +133,6 @@ public class LoginActivity extends AppCompatActivity{
         startActivity(intent);
         finish();
     }
-
-
 
 }
 

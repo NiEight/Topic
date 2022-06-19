@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -32,6 +33,7 @@ public class Unregister extends AppCompatActivity {
 
     private EditText edit_pw_check;
     private ImageButton unregisterBtn;
+    private TextView forget_password;
     private Button backBtn;
 
     private String URL = "http://10.0.2.2/topick/unregister.php";
@@ -47,6 +49,7 @@ public class Unregister extends AppCompatActivity {
 
         edit_pw_check = findViewById(R.id.edit_pw_check);
         unregisterBtn = findViewById(R.id.unregisterBtn);
+        forget_password = findViewById(R.id.forget_password);
         backBtn = findViewById(R.id.backBtn);
 
         //뒤로가기
@@ -54,6 +57,14 @@ public class Unregister extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 onBackPressed();
+            }
+        });
+
+        forget_password.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Unregister.this, FindPw.class);
+                startActivity(intent);
             }
         });
 
