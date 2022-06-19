@@ -1,9 +1,12 @@
 package com.example.topic;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,90 +17,47 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class Bookmark_ArticleFragment extends Fragment {
-
-
     ArrayList<ArticleContents> mlist;
     RecyclerView b_customListView;
     RecyclerView.LayoutManager layoutManager;
     ArticleAdapter articltAdapter;
     private Context ct;
-    String naverHtml;
-    String tag = "뉴스";
 
-    int a_bookmark_count = 0;
-    String[] title = new String[8];
-    String[] description= new String[8];
-    String[] link = new String[8];
+    private static final String TAG_JSON="webnautes";
+    private static final String TAG_TITLE = "title";
+    private static final String TAG_URL = "url";
+    private static final String TAG_TEXT = "text";
+    private String URL = "http://10.0.2.2/topick/getarticledata.php";
 
-    public Bookmark_ArticleFragment(String title, String description, String link, int a_bookMark_count) {
-        this.a_bookmark_count = a_bookMark_count;
-        this.title[a_bookMark_count] = title;
-        this.description[a_bookMark_count] = description;
-        this.link[a_bookMark_count] = link;
-        Log.d("str", this.a_bookmark_count +"1");
-        Log.d("str", this.title[0] +"1");
-        Log.d("str", this.description[0] +"1");
-        Log.d("str",this.link[0]+"");
-    }
-    @SuppressLint("HandlerLeak")
-    Handler handler = new Handler() {
-        public void handleMessage(Message msg) {
-            Bundle bun = msg.getData();
-            naverHtml = bun.getString("NAVER_HTML");
-            naverHtml = naverHtml.replaceAll("<b>","");
-            naverHtml = naverHtml.replaceAll("</b>","");
-            naverHtml = naverHtml.replaceAll("&lt;", "<");
-            naverHtml = naverHtml.replaceAll("&gt;", ">");
-            naverHtml = naverHtml.replaceAll("&amp;", "&");
-
-            try {
-                JSONObject jsonObject = new JSONObject(naverHtml);
-                JSONArray newsArray = jsonObject.getJSONArray("items");
-                mlist.clear();
-                for(int i = 0; i < newsArray.length(); i++) {
-                    JSONObject newsObject = newsArray.getJSONObject(i);
-
-                }
-
-                    ArticleContents item = new ArticleContents(title[a_bookmark_count], description[a_bookmark_count],link[a_bookmark_count]);
-                    mlist.add(item);
-                    articltAdapter = new ArticleAdapter(mlist, ct);
-                    Log.d("str", articltAdapter.toString()+"시발 3");
-                    b_customListView.setAdapter(articltAdapter);
-                    articltAdapter.notifyDataSetChanged();
+    String mJsonString;
 
 
-
-
-
-
-
-
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-
-        }
-    };
-    // TODO: Rename and change types and number of parameters
-
-
-    @Override
+       @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -114,69 +74,105 @@ public class Bookmark_ArticleFragment extends Fragment {
 
         mlist = new ArrayList<>();
 
-
-        //data를 가져와서 어답터와 연결해 준다. 서버에서 가져오는게 대부분 이다.
-
-
-        SearchNews(title[a_bookmark_count]);
+        GetData task = new GetData();
+        task.execute(URL);
 
         return rootView;
-
-
     }
-    private void SearchNews( final String searchWord) {
 
+    private class GetData extends AsyncTask<String, Void, String> {
+           ProgressDialog progressDialog;
+           String errorString = null;
 
-        new Thread() {
-            @Override
-            public void run() {
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
 
-                String clientId = "Tj5VOBHJ7wITkcUdmlhT";//애플리케이션 클라이언트 아이디값";
-                String clientSecret = "rNyCg7ZYpn";//애플리케이션 클라이언트 시크릿값";
-                String text = searchWord;
-                try {
+            progressDialog = ProgressDialog.show(ct,"Please Wait", null, true, true);
+        }
 
-                    String apiURL = "https://openapi.naver.com/v1/search/news.json?query=" + text + "&display=20"; // json 결과
-                    URL url = new URL(apiURL);
-                    HttpURLConnection con = (HttpURLConnection) url.openConnection();
-                    con.setRequestMethod("GET");
-                    con.setRequestProperty("X-Naver-Client-Id", clientId);
-                    con.setRequestProperty("X-Naver-Client-Secret", clientSecret);
-                    int responseCode = con.getResponseCode();
-                    BufferedReader br;
-                    if (responseCode == 200) { // 정상 호출
-                        br = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"));
-                    } else {  // 에러 발생
-                        br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
-                    }
-                    String inputLine;
-                    StringBuffer response = new StringBuffer();
-                    while ((inputLine = br.readLine()) != null) {
-                        response.append(inputLine);
-                        response.append("\n");
-                    }
-                    br.close();
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
 
-                    String naverHtml = response.toString();
+            progressDialog.dismiss();
+            Log.d("json_test", "response - " + result);
 
-                    Bundle bun = new Bundle();
-                    bun.putString("NAVER_HTML", naverHtml);
-                    Message msg = handler.obtainMessage();
-                    msg.setData(bun);
-                    handler.sendMessage(msg);
+            if (result == null) {
+                Toast.makeText(ct, errorString, Toast.LENGTH_SHORT).show();
+            } else {
+                mJsonString = result;
+                showResult();
+            }
+        }
 
-                    //testText.setText(response.toString());
-                    //System.out.println(response.toString());
-                } catch (Exception e) {
-                    e.printStackTrace();
+        protected String doInBackground(String... params) {
+            String serverURL = params[0];
+
+            try {
+                URL url = new URL(serverURL);
+                HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+
+                httpURLConnection.setReadTimeout(5000);
+                httpURLConnection.setConnectTimeout(5000);
+                httpURLConnection.connect();
+
+                int responseStatusCode = httpURLConnection.getResponseCode();
+                Log.d("json_test", "response code - " + responseStatusCode);
+
+                InputStream inputStream;
+                if(responseStatusCode == HttpURLConnection.HTTP_OK) {
+                    inputStream = httpURLConnection.getInputStream();
+                }
+                else{
+                    inputStream = httpURLConnection.getErrorStream();
                 }
 
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "UTF-8");
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+                StringBuilder sb = new StringBuilder();
+                String line;
+
+                while((line = bufferedReader.readLine()) != null){
+                    sb.append(line);
+                }
+
+
+                bufferedReader.close();
+
+
+                return sb.toString().trim();
+            } catch (Exception e) {
+
+                Log.d("json_test", "InsertData: Error ", e);
+                errorString = e.toString();
+
+                return null;
             }
-        }.start();
-
-
-
+        }
     }
 
+    private void showResult() {
+       try {
+            JSONObject jsonObject = new JSONObject(mJsonString);
+            JSONArray jsonArray = jsonObject.getJSONArray(TAG_JSON);
 
+            for(int i = 0; i < jsonArray.length(); i++) {
+                JSONObject item = jsonArray.getJSONObject(i);
+
+                String title = item.getString(TAG_TITLE);
+                String url = item.getString(TAG_URL);
+                String text = item.getString(TAG_TEXT);
+
+                mlist.add(new ArticleContents(title, text, url));
+                articltAdapter = new ArticleAdapter(mlist, ct);
+                Log.d("str", articltAdapter.toString()+"시발 3");
+                b_customListView.setAdapter(articltAdapter);
+                articltAdapter.notifyDataSetChanged();
+            }
+       } catch (JSONException e) {
+           Log.d("json_test", "showResult : ", e);
+       }
+    }
 }
