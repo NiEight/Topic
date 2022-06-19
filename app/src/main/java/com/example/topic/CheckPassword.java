@@ -56,6 +56,7 @@ public class CheckPassword extends AppCompatActivity {
             }
         });
 
+        //비밀번호 찾기
         forget_password.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,20 +89,22 @@ public class CheckPassword extends AppCompatActivity {
             }
         });
 
+        //비밀번호 확인 버튼
         pwCheckBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 password = edit_pw_check.getText().toString().trim();
 
+                //비밀번호가 입력되었는지 확인
                 if(!password.equals("")) {
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            if (response.equals("success")) {
+                            if (response.equals("success")) {   //비밀번호가 일치할 경우
                                 Intent intent = new Intent(CheckPassword.this, ChangePassword.class);
                                 intent.putExtra("email", email);
                                 startActivity(intent);
-                            } else if (response.equals("failure")) {
+                            } else if (response.equals("failure")) {    //비밀번호가 틀린 경우
                                 Toast.makeText(CheckPassword.this, "비밀번호가 잘못됐습니다.", Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -113,6 +116,7 @@ public class CheckPassword extends AppCompatActivity {
                     }){
                         @Nullable
                         @Override
+                        //HashMap으로 php를 통해 DB에 데이터 전달
                         protected Map<String, String> getParams() throws AuthFailureError {
                             Map<String, String> data = new HashMap<>();
                             data.put("email", email);

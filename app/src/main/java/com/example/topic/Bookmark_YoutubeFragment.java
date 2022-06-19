@@ -106,21 +106,25 @@ public class Bookmark_YoutubeFragment extends Fragment{
             String serverURL = params[0];
 
             try {
-                java.net.URL url = new URL(serverURL);
+                //HttpURLConnection 클래스를 사용하여 POST 방식으로 데이터를 전송합니다.
+                java.net.URL url = new URL(serverURL);  //주소가 저장된 변수를 이곳에 입력
                 HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
 
-                httpURLConnection.setReadTimeout(5000);
-                httpURLConnection.setConnectTimeout(5000);
+                httpURLConnection.setReadTimeout(5000);     //5초안에 응답이 오지 않으면 예외
+                httpURLConnection.setConnectTimeout(5000);  //5초안에 연결이 안되면 예외
                 httpURLConnection.connect();
 
+                //response 읽음
                 int responseStatusCode = httpURLConnection.getResponseCode();
                 Log.d("json_test", "response code - " + responseStatusCode);
 
                 InputStream inputStream;
                 if(responseStatusCode == HttpURLConnection.HTTP_OK) {
+                    //정상적인 응답 데이터
                     inputStream = httpURLConnection.getInputStream();
                 }
                 else{
+                    //에러 발생
                     inputStream = httpURLConnection.getErrorStream();
                 }
 

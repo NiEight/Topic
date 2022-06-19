@@ -47,6 +47,7 @@ public class Signup extends AppCompatActivity {
         password = signup_pwText.getText().toString().trim();
         reenterPassword = singup_reenterPassword.getText().toString().trim();
 
+        //비밀번호와 비밀번호 확인 값이 동일한지 체크
         if(!password.equals(reenterPassword)) {
             Toast.makeText(this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
         }

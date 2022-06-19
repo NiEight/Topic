@@ -71,6 +71,7 @@ public class LoginActivity extends AppCompatActivity{
 
     }
     //뒤로가기 2번 했을 시 앱 종료
+    //뒤로가기를 누른 상태에서 2초 내에 한번 더 뒤로가기할 시 토픽 종료
     public void onBackPressed() {
         if(pressedTime == 0) {
             Toast.makeText(this, "한번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show();
@@ -114,6 +115,7 @@ public class LoginActivity extends AppCompatActivity{
             }){
                 @Nullable
                 @Override
+                //HashMap으로 php를 통해 DB에 데이터 전달
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> data = new HashMap<>();
                     data.put("email", email);

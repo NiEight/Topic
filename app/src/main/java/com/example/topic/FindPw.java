@@ -44,16 +44,16 @@ public class FindPw extends AppCompatActivity {
                 name = nameText.getText().toString().trim();
                 email = idText.getText().toString().trim();
 
+                //email과 name이 입력되었는지 확인
                 if(!email.equals("") && !name.equals("")) {
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            Log.d("test",response);
-                            if (response.equals("success")) {
+                            if (response.equals("success")) {   //DB에 일치하는 데이터가 있는 경우
                                 Intent intent = new Intent(FindPw.this, ChangePassword.class);
                                 intent.putExtra("email", email);
                                 startActivity(intent);
-                            } else if (response.equals("failure")) {
+                            } else if (response.equals("failure")) {    //DB에 일치하는 데이터가 없는 경우
                                 Toast.makeText(FindPw.this, "일치하는 회원이 없습니다.", Toast.LENGTH_SHORT).show();
                             }
                         }

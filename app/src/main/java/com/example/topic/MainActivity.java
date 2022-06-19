@@ -91,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
         //검색 버튼
         search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
         tag_btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

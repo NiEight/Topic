@@ -82,12 +82,17 @@ public class ChangePassword extends AppCompatActivity {
                 }
             }
         });
-        
+
+        //비밀번호 변경 버튼
         pwChangedBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 password = edit_pw_check.getText().toString().trim();
+
+                //비밀번호와 비밀번호 확인 칸이 입력되었는지 확인
                 if(!edit_pw_input.getText().toString().trim().equals("") && !password.equals("")) {
+
+                    //비밀번호와 비밀번호 확인 칸이 같은 값인지 확인
                     if(edit_pw_input.getText().toString().trim().equals(password)) {
                         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                             @Override

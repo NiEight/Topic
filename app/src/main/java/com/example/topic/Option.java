@@ -79,7 +79,7 @@ public class Option extends AppCompatActivity {
             }
         });
 
-        //문의하기
+        //문의하기 ACTION_SEND를 통해 이메일 보내기 구현
         support.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,7 +90,6 @@ public class Option extends AppCompatActivity {
                 email.setType("plain/text");
                 String[] address = {"98six.park@kakao.com"};
                 email.putExtra(Intent.EXTRA_EMAIL, address);
-                email.putExtra(Intent.EXTRA_SUBJECT, "");
                 email.putExtra(Intent.EXTRA_TEXT, "Topick을 이용하면서 발생하신 문제점을 적어주세요.");
                 startActivity(email);
             }

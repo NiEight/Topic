@@ -96,17 +96,18 @@ public class Unregister extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 password = edit_pw_check.getText().toString().trim();
-                
+
+                //password가 입력되었는지 확인
                 if(!password.equals("")) {
                     StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            if (response.equals("success")) {
+                            if (response.equals("success")) {   //php를 통해 DB에 일치하는 데이터 삭제 성공
                                 Toast.makeText(Unregister.this, "토픽을 이용해 주셔서 감사합니다.", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(Unregister.this, LoginActivity.class);
                                 startActivity(intent);
                                 finish();
-                            } else if (response.equals("failure")) {
+                            } else if (response.equals("failure")) {    //일치하는 DB가 없는 경우
                                 Toast.makeText(Unregister.this, "비밀번호가 잘못됐습니다.", Toast.LENGTH_SHORT).show();
                             }
                         }
